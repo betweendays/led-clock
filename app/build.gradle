@@ -32,5 +32,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // external
-    compile "com.xrigau:ws2801-driver:0.0.3"
+    implementation "com.xrigau:ws2801-driver:1.0.0"
 }
