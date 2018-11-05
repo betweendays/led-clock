@@ -7,4 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
+    <Button
+        android:id="@+id/btn_madrid"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="64dp"
+        android:text="MADRID"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_canberra"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="CANBERRA"
+        app:layout_constraintStart_toEndOf="@+id/btn_madrid"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_washington"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="WASHINGTON"
+        app:layout_constraintStart_toEndOf="@+id/btn_canberra"
+        app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>
