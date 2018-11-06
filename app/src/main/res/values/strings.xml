@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">LedClock</string>
+
+    <!-- View Messages -->
     <string name="city_canberra">CANBERRA</string>
     <string name="city_washington">WASHINGTON</string>
     <string name="city_madrid">MADRID</string>
     <string name="subtitle">Por favor, selecciona la ciudad que prefieras</string>
+
+    <!-- Error Messages -->
     <string name="error_init">Ha habido un error iniciando los componentes.</string>
     <string name="error_displaying">Ha habido un error mostrando la hora.</string>
     <string name="title_warning">Atención</string>
