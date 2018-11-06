@@ -4,7 +4,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class responsible for parsing time characters and generate a matrix to indicate which LEDs must
@@ -14,7 +16,9 @@ public class MatrixGenerator {
 
     // *************************************** CONSTANTS *************************************** //
 
-    private static final int MAX_LED_POS = 30;
+    private static final int MAX_LED_POS = 28;
+
+    private static final int MAX_POSITIONS_PER_CELL = 7;
 
     private static final int CHAR_0 = 0;
     private static final int CHAR_1 = 1;
@@ -57,13 +61,15 @@ public class MatrixGenerator {
      * @return Array of integers with the LED strips position.
      */
     public int[] generate(String time) {
-        Character[] characters = getCharactersFromTime(time);
+        Map<Integer, Character> characters = getCharactersFromTime(time);
         return getLedStripPositions(characters);
     }
 
     // ************************************ PRIVATE METHODS ************************************ //
 
-    private Character[] getCharactersFromTime(String time) {
+    private Map<Integer, Character> getCharactersFromTime(String time) {
+        Map<Integer, Character> charMap = new HashMap<>();
+
         String[] separated = time.split(":");
         String hour = separated[0];
         String minutes = separated[1];
@@ -71,27 +77,29 @@ public class MatrixGenerator {
         Log.d(mTag, "Hour: " + hour);
         Log.d(mTag, "Minutes: " + minutes);
 
-        Character[] characters = new Character[4];
-        characters[0] = hour.charAt(0);
-        characters[1] = hour.charAt(1);
-        characters[2] = minutes.charAt(0);
-        characters[3] = minutes.charAt(1);
+        charMap.put(CHAR_0, hour.charAt(0));
+        charMap.put(CHAR_1, hour.charAt(1));
+        charMap.put(CHAR_2, minutes.charAt(0));
+        charMap.put(CHAR_3, minutes.charAt(1));
 
-        return characters;
+        return charMap;
     }
 
-    private int[] getLedStripPositions(Character[] timeSplit) {
+    private int[] getLedStripPositions(Map<Integer, Character> charMap) {
         List<Integer> ledPositions = new ArrayList<>();
-        for (Character character : timeSplit) {
-            Log.d(mTag, "Char: " + character);
-            Integer[] positions = getLedPosition(character);
+
+        for (Map.Entry<Integer, Character> entry : charMap.entrySet()) {
+            Integer[] positions = getLedPosition(entry.getKey(), entry.getValue());
+
             Collections.addAll(ledPositions, positions);
         }
 
         return ledPositions.stream().mapToInt(i -> i).toArray();
     }
 
-    private Integer[] getLedPosition(Character character) {
+    private Integer[] getLedPosition(Integer cellPosition, Character character) {
+        int offset = cellPosition * MAX_POSITIONS_PER_CELL;
+
         Integer[] array = new Integer[MAX_LED_POS];
         switch (character) {
             case CHAR_0:
@@ -128,6 +136,8 @@ public class MatrixGenerator {
                 Log.w(mTag, "Unknown character: " + character);
                 // do nothing
         }
+
+        // TODO: offset + matrix
         return array;
     }
 
