@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * TODO: Please describe the objectives and purposes of this class.
+ * Class reponsible for handling clock configuration.
  */
 public class ClockConfig {
 
@@ -25,8 +25,8 @@ public class ClockConfig {
     // log tag
     private final String mTag;
 
-    private City mCity = City.MADRID;
-    private int mColor = Color.BLACK;
+    private City mCity;
+    private int mColor;
 
     // ************************************** CONSTRUCTORS ************************************* //
 
@@ -37,6 +37,11 @@ public class ClockConfig {
 
     // ************************************* PUBLIC METHODS ************************************ //
 
+    /**
+     * Method that sets the clock city and depending on this, its colour.
+     *
+     * @param city {@link City} value to be set.
+     */
     public void setCity(City city) {
         mCity = city;
 
@@ -65,6 +70,11 @@ public class ClockConfig {
         return mColor;
     }
 
+    /**
+     * Method that calculates current time according to the previously configured city.
+     *
+     * @return Current time on the configured city. Madrid by default.
+     */
     public String getTime() {
         TimeZone tz;
         Calendar c = null;
