@@ -9,24 +9,7 @@ import android.widget.Button;
 import java.io.IOException;
 
 /**
- * Skeleton of an Android Things activity.
- * <p>
- * Android Things peripheral APIs are accessible through the class
- * PeripheralManagerService. For example, the snippet below will open a GPIO pin and
- * set it to HIGH:
- * <p>
- * <pre>{@code
- * PeripheralManagerService service = new PeripheralManagerService();
- * mLedGpio = service.openGpio("BCM6");
- * mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
- * mLedGpio.setValue(true);
- * }</pre>
- * <p>
- * For more complex peripherals, look for an existing user-space driver, or implement one if none
- * is available.
- *
- * @see <a href="https://github.com/androidthings/contrib-drivers#readme">https://github
- * .com/androidthings/contrib-drivers#readme</a>
+ * Welcome activity for this Android Things project.
  */
 public class WelcomeActivity extends Activity {
 
@@ -58,7 +41,7 @@ public class WelcomeActivity extends Activity {
             mLedDisplayer = new LedStripDisplayer(TAG);
         } catch (IOException e) {
             Log.e(TAG, "Error when initialising LED displayer.", e);
-            showDialog("Ha habido un error iniciando los componentes.");
+            showDialog(getString(R.string.error_init));
             return;
         }
 
@@ -91,23 +74,22 @@ public class WelcomeActivity extends Activity {
             mLedDisplayer.display(matrix, mClockConfig);
         } catch (IOException e) {
             Log.e(TAG, "Error when displaying time.", e);
-            showDialog("Ha habido un error mostrando la hora.");
+            showDialog(getString(R.string.error_displaying));
         }
     }
 
     private void showDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Atención");
+        builder.setTitle(R.string.title_warning);
         builder.setMessage(message);
 
         // add buttons
         builder.setPositiveButton(R.string.app_name, (dialog, id) -> {
-            // aquí s'executa el codi quan l'usuari apreta el botó "OK"
             dialog.dismiss();
         });
 
-        // Create the AlertDialog
+        // create & show dialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }
