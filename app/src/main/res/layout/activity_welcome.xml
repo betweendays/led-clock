@@ -7,33 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
+    <TextView
+        android:id="@+id/textView_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/subtitle"
+        app:layout_constraintBottom_toTopOf="@+id/btn_madrid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Madrid -->
     <Button
         android:id="@+id/btn_madrid"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:text="MADRID"
+        android:text="@string/city_madrid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- Canberra -->
     <Button
         android:id="@+id/btn_canberra"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:text="CANBERRA"
+        android:text="@string/city_canberra"
         app:layout_constraintStart_toEndOf="@+id/btn_madrid"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- Washington -->
     <Button
         android:id="@+id/btn_washington"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:text="WASHINGTON"
+        android:text="@string/city_washington"
         app:layout_constraintStart_toEndOf="@+id/btn_canberra"
         app:layout_constraintTop_toTopOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

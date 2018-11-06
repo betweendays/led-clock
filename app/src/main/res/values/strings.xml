@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LedClock</string>
+    <string name="city_canberra">CANBERRA</string>
+    <string name="city_washington">WASHINGTON</string>
+    <string name="city_madrid">MADRID</string>
+    <string name="subtitle">Por favor, selecciona la ciudad que prefieras</string>
 </resources>

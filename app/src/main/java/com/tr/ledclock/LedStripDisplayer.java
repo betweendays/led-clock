@@ -2,8 +2,6 @@ package com.tr.ledclock;
 
 import android.util.Log;
 
-import com.tr.ledclock.BoardDefaults;
-import com.tr.ledclock.ClockConfig;
 import com.xrigau.driver.ws2801.Ws2801;
 
 import java.io.IOException;
