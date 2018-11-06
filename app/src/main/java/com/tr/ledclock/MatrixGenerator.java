@@ -18,7 +18,7 @@ public class MatrixGenerator {
 
     private static final int MAX_LED_POS = 28;
 
-    private static final int MAX_POSITIONS_PER_CELL = 7;
+    private static final int MAX_LEDS_PER_CELL = 7;
 
     private static final int CHAR_0 = 0;
     private static final int CHAR_1 = 1;
@@ -61,8 +61,14 @@ public class MatrixGenerator {
      * @return Array of integers with the LED strips position.
      */
     public int[] generate(String time) {
-        Map<Integer, Character> characters = getCharactersFromTime(time);
-        return getLedStripPositions(characters);
+        Map<Integer, Character> charMap = getCharactersFromTime(time);
+        List<Integer> ledPositions = new ArrayList<>();
+
+        for (Map.Entry<Integer, Character> entry : charMap.entrySet()) {
+            Integer[] positions = getLedPosition(entry.getKey(), entry.getValue());
+            Collections.addAll(ledPositions, positions);
+        }
+        return ledPositions.stream().mapToInt(i -> i).toArray();
     }
 
     // ************************************ PRIVATE METHODS ************************************ //
@@ -85,60 +91,61 @@ public class MatrixGenerator {
         return charMap;
     }
 
-    private int[] getLedStripPositions(Map<Integer, Character> charMap) {
-        List<Integer> ledPositions = new ArrayList<>();
-
-        for (Map.Entry<Integer, Character> entry : charMap.entrySet()) {
-            Integer[] positions = getLedPosition(entry.getKey(), entry.getValue());
-
-            Collections.addAll(ledPositions, positions);
-        }
-
-        return ledPositions.stream().mapToInt(i -> i).toArray();
-    }
-
     private Integer[] getLedPosition(Integer cellPosition, Character character) {
-        int offset = cellPosition * MAX_POSITIONS_PER_CELL;
+        // this offset is calculated in order to set the LED strip position given that each cell
+        // has 7 LEDs.
+        int offset = cellPosition * MAX_LEDS_PER_CELL;
 
-        Integer[] array = new Integer[MAX_LED_POS];
+        Integer[] rawPositions = new Integer[MAX_LED_POS];
         switch (character) {
             case CHAR_0:
-                array = CHAR_0_VALUES;
+                rawPositions = CHAR_0_VALUES;
                 break;
             case CHAR_1:
-                array = CHAR_1_VALUES;
+                rawPositions = CHAR_1_VALUES;
                 break;
             case CHAR_2:
-                array = CHAR_2_VALUES;
+                rawPositions = CHAR_2_VALUES;
                 break;
             case CHAR_3:
-                array = CHAR_3_VALUES;
+                rawPositions = CHAR_3_VALUES;
                 break;
             case CHAR_4:
-                array = CHAR_4_VALUES;
+                rawPositions = CHAR_4_VALUES;
                 break;
             case CHAR_5:
-                array = CHAR_5_VALUES;
+                rawPositions = CHAR_5_VALUES;
                 break;
             case CHAR_6:
-                array = CHAR_6_VALUES;
+                rawPositions = CHAR_6_VALUES;
                 break;
             case CHAR_7:
-                array = CHAR_7_VALUES;
+                rawPositions = CHAR_7_VALUES;
                 break;
             case CHAR_8:
-                array = CHAR_8_VALUES;
+                rawPositions = CHAR_8_VALUES;
                 break;
             case CHAR_9:
-                array = CHAR_9_VALUES;
+                rawPositions = CHAR_9_VALUES;
                 break;
             default:
                 Log.w(mTag, "Unknown character: " + character);
                 // do nothing
         }
 
-        // TODO: offset + matrix
-        return array;
+        // add offset for each of the array elements according to the cell position
+        Integer[] positions = new Integer[MAX_LED_POS];
+        for (int i = 0; i < rawPositions.length; i++) {
+            Log.d(mTag, "[RAW] Position value in (" + i + "): " + rawPositions[i]);
+            if (cellPosition > 1) {
+                // add another offset for the minutes due to 2 LEDs are for the `:` separator
+                positions[i] = rawPositions[i] + offset + 2;
+            } else {
+                positions[i] = rawPositions[i] + offset;
+            }
+            Log.d(mTag, "Position value in (" + i + "): " + positions[i]);
+        }
+        return positions;
     }
 
 }
