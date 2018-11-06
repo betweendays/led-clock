@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.tr.ledclock.ClockConfig.City.Washington;
-
 /**
  * TODO: Please describe the objectives and purposes of this class.
  */
@@ -17,9 +15,9 @@ public class ClockConfig {
     // ***************************************** ENUMS ***************************************** //
 
     enum City {
-        Madrid, // BLUE
-        Canberra, // RED
-        Washington // YELLOW
+        MADRID, // BLUE
+        CANBERRA, // RED
+        WASHINGTON // YELLOW
     }
 
     // ****************************************** VARS ***************************************** //
@@ -27,14 +25,14 @@ public class ClockConfig {
     // log tag
     private final String mTag;
 
-    private City mCity = City.Madrid;
+    private City mCity = City.MADRID;
     private int mColor = Color.BLACK;
 
     // ************************************** CONSTRUCTORS ************************************* //
 
     public ClockConfig(String tag) {
         mTag = tag;
-        setCity(City.Madrid);
+        setCity(City.MADRID);
     }
 
     // ************************************* PUBLIC METHODS ************************************ //
@@ -43,13 +41,13 @@ public class ClockConfig {
         mCity = city;
 
         switch (city) {
-            case Madrid:
+            case MADRID:
                 mColor = Color.BLUE;
                 break;
-            case Canberra:
+            case CANBERRA:
                 mColor = Color.RED;
                 break;
-            case Washington:
+            case WASHINGTON:
                 mColor = Color.YELLOW;
                 break;
             default:
@@ -71,15 +69,15 @@ public class ClockConfig {
         TimeZone tz;
         Calendar c = null;
         switch (mCity) {
-            case Madrid:
+            case MADRID:
                 tz = TimeZone.getTimeZone("GMT+1:00");
                 c = Calendar.getInstance(tz);
                 break;
-            case Canberra:
+            case CANBERRA:
                 tz = TimeZone.getTimeZone("GMT+11:00");
                 c = Calendar.getInstance(tz);
                 break;
-            case Washington:
+            case WASHINGTON:
                 tz = TimeZone.getTimeZone("GMT-7:00");
                 c = Calendar.getInstance(tz);
                 break;

@@ -4,16 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.webkit.WebBackForwardList;
 import android.widget.Button;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import static com.tr.ledclock.ClockConfig.City.Washington;
 
 /**
  * Skeleton of an Android Things activity.
@@ -74,7 +67,7 @@ public class WelcomeActivity extends Activity {
         mMadridBtn = findViewById(R.id.btn_madrid);
 
         // set buttons listeners to handle actions
-        mMadridBtn.setOnClickListener(view -> mClockConfig.setCity(ClockConfig.City.Madrid));
+        mMadridBtn.setOnClickListener(view -> mClockConfig.setCity(ClockConfig.City.MADRID));
     }
 
     // ************************************ PRIVATE METHODS ************************************ //
