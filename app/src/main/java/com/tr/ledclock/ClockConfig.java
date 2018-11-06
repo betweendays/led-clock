@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Class reponsible for handling clock configuration.
+ * Class responsible for handling clock configuration.
  */
 public class ClockConfig {
 

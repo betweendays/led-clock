@@ -53,6 +53,7 @@ public class WelcomeActivity extends Activity {
 
         // init dependencies
         mClockConfig = new ClockConfig(TAG);
+        mMatrix = new MatrixGenerator(TAG);
         try {
             mLedDisplayer = new LedStripDisplayer(TAG);
         } catch (IOException e) {
@@ -67,9 +68,21 @@ public class WelcomeActivity extends Activity {
         mMadridBtn = findViewById(R.id.btn_madrid);
 
         // set buttons listeners to handle actions
-        mMadridBtn.setOnClickListener(view -> mClockConfig.setCity(ClockConfig.City.MADRID));
+        mMadridBtn.setOnClickListener(view -> {
+            mClockConfig.setCity(ClockConfig.City.MADRID);
+            mMadridBtn.setEnabled(false);
+        });
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            mLedDisplayer.stop();
+        } catch (IOException e) {
+            Log.e(TAG, "Exception closing LED strip.", e);
+        }
+        super.onDestroy();
+    }
     // ************************************ PRIVATE METHODS ************************************ //
 
     private void displayLeds() {

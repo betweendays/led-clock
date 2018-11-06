@@ -2,6 +2,9 @@ package com.tr.ledclock;
 
 import android.os.Build;
 
+/**
+ * Class responsible for providing board default ports.
+ */
 public class BoardDefaults {
 
     private BoardDefaults() {
