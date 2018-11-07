@@ -35,6 +35,8 @@ public class WelcomeActivity extends Activity {
     // ***************************************** VIEWS ***************************************** //
 
     private Button mMadridBtn;
+    private Button mCanberraBtn;
+    private Button mWashingtonBtn;
 
     // *************************************** LIFECYCLE *************************************** //
 
@@ -54,15 +56,35 @@ public class WelcomeActivity extends Activity {
             return;
         }
 
-        displayLeds();
-
         // set UI references from the view
         mMadridBtn = findViewById(R.id.btn_madrid);
+        mCanberraBtn = findViewById(R.id.btn_canberra);
+        mWashingtonBtn = findViewById(R.id.btn_washington);
 
-        // set buttons listeners to handle actions
+        displayLeds();
+
+        // user clicks on Madrid
         mMadridBtn.setOnClickListener(view -> {
             mClockConfig.setCity(ClockConfig.City.MADRID);
             mMadridBtn.setEnabled(false);
+            mCanberraBtn.setEnabled(true);
+            mWashingtonBtn.setEnabled(true);
+        });
+
+        // user clicks on Canberra
+        mCanberraBtn.setOnClickListener(view -> {
+            mClockConfig.setCity(ClockConfig.City.CANBERRA);
+            mCanberraBtn.setEnabled(false);
+            mMadridBtn.setEnabled(true);
+            mWashingtonBtn.setEnabled(true);
+        });
+
+        // user clicks on Canberra
+        mWashingtonBtn.setOnClickListener(view -> {
+            mClockConfig.setCity(ClockConfig.City.WASHINGTON);
+            mWashingtonBtn.setEnabled(false);
+            mCanberraBtn.setEnabled(true);
+            mMadridBtn.setEnabled(true);
         });
     }
 
