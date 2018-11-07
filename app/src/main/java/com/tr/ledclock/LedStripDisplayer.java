@@ -2,6 +2,7 @@ package com.tr.ledclock;
 
 import android.util.Log;
 
+import com.tr.ledclock.utils.BoardDefaults;
 import com.xrigau.driver.ws2801.Ws2801;
 
 import java.io.IOException;
@@ -9,18 +10,18 @@ import java.io.IOException;
 /**
  * Class responsible for displaying LEDs from the WS2801 strip.
  */
-class LedStripDisplayer {
+public class LedStripDisplayer {
 
     // ****************************************** VARS ***************************************** //
 
     private final String mTag;
-    private Ws2801 mLedstrip;
+    private Ws2801 mLedStrip;
 
     // ************************************** CONSTRUCTORS ************************************* //
 
     public LedStripDisplayer(String logTag) throws IOException {
         mTag = logTag;
-        mLedstrip = Ws2801.create(BoardDefaults.getSPIPort(), Ws2801.Mode.RBG);
+        mLedStrip = Ws2801.create(BoardDefaults.getSPIPort(), Ws2801.Mode.RBG);
     }
 
     // ************************************* PUBLIC METHODS ************************************ //
@@ -43,7 +44,7 @@ class LedStripDisplayer {
             Log.d(mTag, "LEDs position: " + value);
         }
 
-        mLedstrip.write(leds);
+        mLedStrip.write(leds);
         Log.d(mTag, "Done.");
     }
 
@@ -54,6 +55,6 @@ class LedStripDisplayer {
      */
     public void stop() throws IOException {
         Log.d(mTag, "Close LED strip.");
-        mLedstrip.close();
+        mLedStrip.close();
     }
 }

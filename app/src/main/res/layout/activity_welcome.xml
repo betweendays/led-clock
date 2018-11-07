@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity">
+    tools:context=".ui.WelcomeActivity">
 
     <TextView
         android:id="@+id/textView_subtitle"
@@ -50,6 +50,28 @@
         android:layout_marginTop="64dp"
         android:text="@string/city_washington"
         app:layout_constraintStart_toEndOf="@+id/btn_canberra"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Tokio -->
+    <Button
+        android:id="@+id/btn_tokyo"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/city_tokyo"
+        app:layout_constraintStart_toEndOf="@+id/btn_washington"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Nueva Delhi -->
+    <Button
+        android:id="@+id/btn_newDelhi"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/city_newDelhi"
+        app:layout_constraintStart_toEndOf="@+id/btn_tokyo"
         app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

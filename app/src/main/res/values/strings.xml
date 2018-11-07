@@ -11,4 +11,6 @@
     <string name="error_init">Ha habido un error iniciando los componentes.</string>
     <string name="error_displaying">Ha habido un error mostrando la hora.</string>
     <string name="title_warning">Atención</string>
+    <string name="city_tokyo">Tokio</string>
+    <string name="city_newDelhi">Nueva Delhi</string>
 </resources>

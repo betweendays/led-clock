@@ -14,7 +14,7 @@ public class ClockConfig {
 
     // ***************************************** ENUMS ***************************************** //
 
-    enum City {
+    public enum City {
         MADRID, // BLUE
         CANBERRA, // RED
         WASHINGTON // YELLOW

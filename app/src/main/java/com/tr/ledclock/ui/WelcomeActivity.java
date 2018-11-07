@@ -1,10 +1,15 @@
-package com.tr.ledclock;
+package com.tr.ledclock.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+
+import com.tr.ledclock.ClockConfig;
+import com.tr.ledclock.LedStripDisplayer;
+import com.tr.ledclock.MatrixGenerator;
+import com.tr.ledclock.R;
 
 import java.io.IOException;
 

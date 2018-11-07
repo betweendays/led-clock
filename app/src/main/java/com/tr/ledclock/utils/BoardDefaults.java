@@ -1,4 +1,4 @@
-package com.tr.ledclock;
+package com.tr.ledclock.utils;
 
 import android.os.Build;
 
