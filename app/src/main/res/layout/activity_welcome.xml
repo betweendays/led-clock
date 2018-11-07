@@ -52,7 +52,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_canberra"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- Tokio -->
+    <!-- Tokyo -->
     <Button
         android:id="@+id/btn_tokyo"
         android:layout_width="130dp"

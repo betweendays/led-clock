@@ -2,6 +2,10 @@ package com.tr.ledclock.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -63,6 +67,25 @@ public class WelcomeActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        registerReceiver(timeChangedListener, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(timeChangedListener);
+        try {
+            mLedDisplayer.stop();
+        } catch (IOException e) {
+            Log.e(TAG, "Error when stopping LED displayer.", e);
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         try {
             mLedDisplayer.stop();
@@ -72,6 +95,18 @@ public class WelcomeActivity extends Activity {
         super.onDestroy();
     }
     // ************************************ PRIVATE METHODS ************************************ //
+
+    private final BroadcastReceiver timeChangedListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (action.equals(Intent.ACTION_TIME_CHANGED) ||
+                    action.equals(Intent.ACTION_TIMEZONE_CHANGED)) {
+                Log.d(TAG, "Time changed.");
+                displayLeds();
+            }
+        }
+    };
 
     private void displayLeds() {
         int[] matrix = mMatrix.generate(mClockConfig.getTime());
