@@ -5,7 +5,7 @@
     <string name="city_canberra">CANBERRA</string>
     <string name="city_washington">WASHINGTON</string>
     <string name="city_madrid">MADRID</string>
-    <string name="subtitle">Por favor, selecciona la ciudad que prefieras</string>
+    <string name="subtitle">Por favor, seleccione la ciudad con la que quiere configurar su reloj.</string>
 
     <!-- Error Messages -->
     <string name="error_init">Ha habido un error iniciando los componentes.</string>
