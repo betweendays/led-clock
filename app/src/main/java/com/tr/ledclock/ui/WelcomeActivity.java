@@ -122,8 +122,7 @@ public class WelcomeActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (action.equals(Intent.ACTION_TIME_CHANGED) ||
-                    action.equals(Intent.ACTION_TIMEZONE_CHANGED)) {
+            if (action != null && action.equals(Intent.ACTION_TIME_TICK)) {
                 Log.d(TAG, "Time changed.");
                 displayLeds();
             }
@@ -131,7 +130,7 @@ public class WelcomeActivity extends Activity {
     };
 
     private void displayLeds() {
-        int[] matrix = mMatrix.generate(mClockConfig.getTime());
+        boolean[] matrix = mMatrix.generate(mClockConfig.getTimeCharMap());
         try {
             mLedDisplayer.display(matrix, mClockConfig);
         } catch (IOException e) {
@@ -147,9 +146,7 @@ public class WelcomeActivity extends Activity {
         builder.setMessage(message);
 
         // add buttons
-        builder.setPositiveButton(R.string.app_name, (dialog, id) -> {
-            dialog.dismiss();
-        });
+        builder.setPositiveButton(R.string.app_name, (dialog, id) -> dialog.dismiss());
 
         // create & show dialog
         AlertDialog dialog = builder.create();

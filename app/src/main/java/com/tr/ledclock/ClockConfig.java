@@ -3,9 +3,7 @@ package com.tr.ledclock;
 import android.graphics.Color;
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Map;
 
 /**
  * Class responsible for handling clock configuration.
@@ -27,12 +25,14 @@ public class ClockConfig {
 
     private City mCity;
     private int mColor;
+    private TimeTuple mTime;
 
     // ************************************** CONSTRUCTORS ************************************* //
 
     public ClockConfig(String tag) {
         mTag = tag;
         setCity(City.MADRID);
+        mTime = new TimeTuple(tag);
     }
 
     // ************************************* PUBLIC METHODS ************************************ //
@@ -70,40 +70,16 @@ public class ClockConfig {
         return mColor;
     }
 
+    public int getDefaultColor() {
+        return Color.BLACK;
+    }
+
     /**
      * Method that calculates current time according to the previously configured city.
      *
      * @return Current time on the configured city. Madrid by default.
      */
-    public String getTime() {
-        TimeZone tz;
-        Calendar c = null;
-        switch (mCity) {
-            case MADRID:
-                tz = TimeZone.getTimeZone("GMT+1:00");
-                c = Calendar.getInstance(tz);
-                break;
-            case CANBERRA:
-                tz = TimeZone.getTimeZone("GMT+11:00");
-                c = Calendar.getInstance(tz);
-                break;
-            case WASHINGTON:
-                tz = TimeZone.getTimeZone("GMT-7:00");
-                c = Calendar.getInstance(tz);
-                break;
-            default:
-                // Unknown city, do nothing
-        }
-
-        if (c == null) {
-            throw new IllegalStateException("Couldn't get time.");
-        }
-
-        // només agafa l'hora i els minuts..
-        String time = String.format(Locale.getDefault(), "%02d", c.get(Calendar.HOUR_OF_DAY)) +
-                String.format(Locale.getDefault(), "%02d", c.get(Calendar.MINUTE));
-
-        Log.d(mTag, "Current time: " + time);
-        return time;
+    public Map<Integer, Character> getTimeCharMap() {
+        return mTime.getTimeCharMap(mCity);
     }
 }

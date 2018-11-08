@@ -34,16 +34,17 @@ public class LedStripDisplayer {
      * @param config {@link ClockConfig} instance with the required colour.
      * @throws IOException Thrown if an error occurs while writing on LED strip.
      */
-    public void display(int[] matrix, ClockConfig config) throws IOException {
-        Log.d(mTag, "Display leds with colour: " + config.getColor());
-
+    public void display(boolean[] matrix, ClockConfig config) throws IOException {
         int[] leds = new int[matrix.length];
-        for (int value : matrix) {
-            leds[value] = config.getColor();
-
-            Log.d(mTag, "LEDs position: " + value);
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i]) {
+                leds[i] = config.getColor();
+            } else {
+                leds[i] = config.getDefaultColor();
+            }
         }
 
+        Log.d(mTag, "Changing clock time...");
         mLedStrip.write(leds);
         Log.d(mTag, "Done.");
     }
