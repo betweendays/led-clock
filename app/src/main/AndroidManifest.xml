@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.tr.ledclock">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tr.ledclock">
+
+    <uses-permission android:name="com.google.android.things.permission.USE_PERIPHERAL_IO" />
+    <uses-permission android:name="com.google.android.things.permission.MANAGE_INPUT_DRIVERS" />
 
     <application>
         <uses-library android:name="com.google.android.things"/>
 
         <activity android:name=".ui.WelcomeActivity">
+            <!-- Make this the launcher activity -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Make this activity the first to launch on boot -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
