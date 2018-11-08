@@ -45,14 +45,6 @@ class TimeTuple {
         return mMinutes;
     }
 
-    public void setHour(String hour) {
-        mHour = hour;
-    }
-
-    public void setMinutes(String minutes) {
-        mMinutes = minutes;
-    }
-
     public Map<Integer, Character> getTimeCharMap(ClockConfig.City mCity) {
         TimeZone tz;
         Calendar c = null;
