@@ -27,17 +27,16 @@ public class MatrixGenerator {
     private static final char CHAR_8 = '8';
     private static final char CHAR_9 = '9';
 
-    // TODO: this should be properly defined
     private static final Integer[] CHAR_0_VALUES = {0, 1, 2, 3, 4, 5};
     private static final Integer[] CHAR_1_VALUES = {3, 4};
     private static final Integer[] CHAR_2_VALUES = {0, 2, 3, 5, 6};
-    private static final Integer[] CHAR_3_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_4_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_5_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_6_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_7_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_8_VALUES = {0, 1, 2};
-    private static final Integer[] CHAR_9_VALUES = {0, 1, 2};
+    private static final Integer[] CHAR_3_VALUES = {2, 3, 4, 5, 6};
+    private static final Integer[] CHAR_4_VALUES = {1, 6, 3, 4};
+    private static final Integer[] CHAR_5_VALUES = {2, 1, 6, 4, 5};
+    private static final Integer[] CHAR_6_VALUES = {0, 1, 2, 4, 5, 6};
+    private static final Integer[] CHAR_7_VALUES = {2, 3, 4};
+    private static final Integer[] CHAR_8_VALUES = {0, 1, 2, 3, 4, 5, 6};
+    private static final Integer[] CHAR_9_VALUES = {1, 2, 3, 4, 6};
 
     // ************************************* PUBLIC METHODS ************************************ //
 
