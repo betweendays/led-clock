@@ -47,7 +47,7 @@ public class WelcomeActivity extends Activity {
 
         // init dependencies
         mClockConfig = new ClockConfig(TAG);
-        mMatrix = new MatrixGenerator(TAG);
+        mMatrix = new MatrixGenerator();
         try {
             mLedDisplayer = new LedStripDisplayer(TAG);
         } catch (IOException e) {

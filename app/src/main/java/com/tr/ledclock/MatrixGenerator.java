@@ -1,7 +1,5 @@
 package com.tr.ledclock;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,16 +39,6 @@ public class MatrixGenerator {
     private static final Integer[] CHAR_8_VALUES = {0, 1, 2};
     private static final Integer[] CHAR_9_VALUES = {0, 1, 2};
 
-    // ****************************************** VARS ***************************************** //
-
-    private final String mTag;
-
-    // ************************************** CONSTRUCTORS ************************************* //
-
-    public MatrixGenerator(String logTag) {
-        mTag = logTag;
-    }
-
     // ************************************* PUBLIC METHODS ************************************ //
 
     /**
@@ -60,8 +48,6 @@ public class MatrixGenerator {
      * @return Array of integers with the LED strips position.
      */
     public boolean[] generate(Map<Integer, Character> charMap) {
-        Log.d(mTag, "Generate LEDs matrix.");
-
         boolean[] allPositions = new boolean[MAX_LED_POS];
         List<Integer> concatenatedPos = new ArrayList<>();
 
