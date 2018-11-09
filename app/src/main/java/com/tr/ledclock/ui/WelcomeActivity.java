@@ -16,6 +16,7 @@ import com.tr.ledclock.MatrixGenerator;
 import com.tr.ledclock.R;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Welcome activity for this Android Things project.
@@ -79,7 +80,7 @@ public class WelcomeActivity extends Activity {
             mWashingtonBtn.setEnabled(true);
         });
 
-        // user clicks on Canberra
+        // user clicks on Washington
         mWashingtonBtn.setOnClickListener(view -> {
             mClockConfig.setCity(ClockConfig.City.WASHINGTON);
             mWashingtonBtn.setEnabled(false);
@@ -91,6 +92,8 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // register to get notified when time changes
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeChangedListener, filter);
@@ -98,6 +101,7 @@ public class WelcomeActivity extends Activity {
 
     @Override
     protected void onStop() {
+        // unregister to stop being notified when time changes
         unregisterReceiver(timeChangedListener);
         try {
             mLedDisplayer.stop();
@@ -130,7 +134,10 @@ public class WelcomeActivity extends Activity {
     };
 
     private void displayLeds() {
-        boolean[] matrix = mMatrix.generate(mClockConfig.getTimeCharMap());
+        // get time in a char map format
+        Map<Integer, Character> charMap = mClockConfig.getTimeCharMap();
+
+        boolean[] matrix = mMatrix.generate(charMap);
         try {
             mLedDisplayer.display(matrix, mClockConfig);
         } catch (IOException e) {

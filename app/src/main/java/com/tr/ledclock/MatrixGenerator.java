@@ -51,7 +51,7 @@ public class MatrixGenerator {
         List<Integer> concatenatedPos = new ArrayList<>();
 
         for (Map.Entry<Integer, Character> entry : charMap.entrySet()) {
-            List<Integer> rawPositions = getCharacterPositions(entry.getValue());
+            List<Integer> rawPositions = getArrayLedsPerCharacter(entry.getValue());
             rawPositions = addOffset(entry.getKey(), rawPositions);
             concatenatedPos.addAll(rawPositions);
         }
@@ -85,7 +85,7 @@ public class MatrixGenerator {
 
     // ************************************ PRIVATE METHODS ************************************ //
 
-    private List<Integer> getCharacterPositions(Character character) {
+    private List<Integer> getArrayLedsPerCharacter(Character character) {
         List<Integer> rawPositions = null;
         switch (character) {
             case CHAR_0:
