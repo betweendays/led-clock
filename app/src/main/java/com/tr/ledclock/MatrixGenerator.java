@@ -13,7 +13,7 @@ public class MatrixGenerator {
 
     // *************************************** CONSTANTS *************************************** //
 
-    private static final int MAX_LED_POS = 28;
+    private static final int MAX_LED_POS = 30;
     private static final int MAX_LEDS_PER_CELL = 7;
 
     private static final char CHAR_0 = '0';
