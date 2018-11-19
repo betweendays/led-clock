@@ -7,8 +7,11 @@ import android.widget.Button;
 
 import com.tr.ledclock.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class WelcomeActivity extends Activity {
@@ -39,6 +42,11 @@ public class WelcomeActivity extends Activity {
 
         // set time zone by default
         showCurrentTime(GMT_MADRID);
+
+        List<Character> characters = getCurrentTimeCharacters(GMT_MADRID);
+        for (Character character : characters) {
+            Log.d(TAG, "Character: " + character);
+        }
 
         /*Ws2801 ledstrip = Ws2801.create(SPI_DEVICE_NAME, Ws2801.Mode.RGB);
         ledstrip.write();
@@ -96,5 +104,24 @@ public class WelcomeActivity extends Activity {
         String minutes = String.format(Locale.getDefault(), TIME_FORMAT, calendar.get(Calendar.MINUTE));
 
         Log.d(TAG, "Current time = " + hour + ":" + minutes);
+    }
+
+    private List<Character> getCurrentTimeCharacters(String gmt) {
+        List<Character> charactersList = new ArrayList<>();
+
+        TimeZone timeZone = TimeZone.getTimeZone(gmt);
+        Calendar calendar = Calendar.getInstance(timeZone);
+
+        String hour = String.format(Locale.getDefault(), TIME_FORMAT, calendar.get(Calendar.HOUR_OF_DAY));
+        String minutes = String.format(Locale.getDefault(), TIME_FORMAT, calendar.get(Calendar.MINUTE));
+
+        Log.d(TAG, "Current time = " + hour + ":" + minutes);
+
+        charactersList.add(hour.charAt(0));
+        charactersList.add(hour.charAt(1));
+        charactersList.add(minutes.charAt(0));
+        charactersList.add(minutes.charAt(1));
+
+        return charactersList;
     }
 }
