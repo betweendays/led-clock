@@ -1,16 +1,7 @@
 <resources>
-    <string name="app_name">LedClock</string>
-
-    <!-- View Messages -->
-    <string name="city_canberra">CANBERRA</string>
-    <string name="city_washington">WASHINGTON</string>
-    <string name="city_madrid">MADRID</string>
-    <string name="subtitle">Por favor, seleccione la ciudad con la que quiere configurar su reloj.</string>
-
-    <!-- Error Messages -->
-    <string name="error_init">Ha habido un error iniciando los componentes. Por favor, asegurese que los LEDs están conectados.</string>
-    <string name="error_displaying">Ha habido un error mostrando la hora.</string>
-    <string name="title_warning">Atención</string>
-    <string name="city_tokyo">Tokio</string>
-    <string name="city_newDelhi">Nueva Delhi</string>
+    <string name="app_name">MyApplication</string>
+    <string name="welcome_subtitle">Por favor, selecciona la ciudad que quieras configurar</string>
+    <string name="button_madrid">Madrid</string>
+    <string name="button_canberra">Canberra</string>
+    <string name="button_washington">Washington</string>
 </resources>

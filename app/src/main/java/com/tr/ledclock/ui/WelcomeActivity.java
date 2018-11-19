@@ -1,43 +1,31 @@
 package com.tr.ledclock.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
-import com.tr.ledclock.ClockConfig;
-import com.tr.ledclock.LedStripDisplayer;
-import com.tr.ledclock.MatrixGenerator;
 import com.tr.ledclock.R;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
-/**
- * Welcome activity for this Android Things project.
- */
 public class WelcomeActivity extends Activity {
 
     // *************************************** CONSTANTS *************************************** //
 
     private static final String TAG = WelcomeActivity.class.getSimpleName();
+    private static final String GMT_MADRID = "GMT+1:00";
+    private static final String GMT_CANBERRA = "GMT+11:00";
+    private static final String GMT_WASHINGTON = "GMT-7:00";
+    private static final String TIME_FORMAT = "%02d";
 
     // ****************************************** VARS ***************************************** //
 
-    private ClockConfig mClockConfig;
-    private LedStripDisplayer mLedDisplayer;
-    private MatrixGenerator mMatrix;
-
-    // ***************************************** VIEWS ***************************************** //
-
     private Button mMadridBtn;
     private Button mCanberraBtn;
-    private Button mWashingtonBtn;
+    private Button mWashington;
 
     // *************************************** LIFECYCLE *************************************** //
 
@@ -46,117 +34,67 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // init dependencies
-        mClockConfig = new ClockConfig(TAG);
-        mMatrix = new MatrixGenerator();
-        try {
-            mLedDisplayer = new LedStripDisplayer(TAG);
-        } catch (IOException e) {
-            Log.e(TAG, "Error when initialising LED displayer.", e);
-            showDialog(getString(R.string.error_init));
-            return;
-        }
+        setUiElements();
+        setButtonsListeners();
 
-        // set UI references from the view
-        mMadridBtn = findViewById(R.id.btn_madrid);
-        mCanberraBtn = findViewById(R.id.btn_canberra);
-        mWashingtonBtn = findViewById(R.id.btn_washington);
+        // set time zone by default
+        showCurrentTime(GMT_MADRID);
 
-        displayLeds();
-
-        // user clicks on Madrid
-        mMadridBtn.setOnClickListener(view -> {
-            mClockConfig.setCity(ClockConfig.City.MADRID);
-            mMadridBtn.setEnabled(false);
-            mCanberraBtn.setEnabled(true);
-            mWashingtonBtn.setEnabled(true);
-        });
-
-        // user clicks on Canberra
-        mCanberraBtn.setOnClickListener(view -> {
-            mClockConfig.setCity(ClockConfig.City.CANBERRA);
-            mCanberraBtn.setEnabled(false);
-            mMadridBtn.setEnabled(true);
-            mWashingtonBtn.setEnabled(true);
-        });
-
-        // user clicks on Washington
-        mWashingtonBtn.setOnClickListener(view -> {
-            mClockConfig.setCity(ClockConfig.City.WASHINGTON);
-            mWashingtonBtn.setEnabled(false);
-            mCanberraBtn.setEnabled(true);
-            mMadridBtn.setEnabled(true);
-        });
+        /*Ws2801 ledstrip = Ws2801.create(SPI_DEVICE_NAME, Ws2801.Mode.RGB);
+        ledstrip.write();
+        ledstrip.close();*/
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        // register to get notified when time changes
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_TIME_TICK);
-        registerReceiver(timeChangedListener, filter);
+        // quan l'app es mostri (no per primer cop)
     }
 
     @Override
     protected void onStop() {
-        // unregister to stop being notified when time changes
-        unregisterReceiver(timeChangedListener);
-        try {
-            mLedDisplayer.stop();
-        } catch (IOException e) {
-            Log.e(TAG, "Error when stopping LED displayer.", e);
-        }
         super.onStop();
+        // quan l'app es queda en background
     }
 
     @Override
     protected void onDestroy() {
-        try {
-            mLedDisplayer.stop();
-        } catch (IOException e) {
-            Log.e(TAG, "Exception closing LED strip.", e);
-        }
         super.onDestroy();
+        // quan l'app estigui a punt de morir
     }
+
     // ************************************ PRIVATE METHODS ************************************ //
 
-    private final BroadcastReceiver timeChangedListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (action != null && action.equals(Intent.ACTION_TIME_TICK)) {
-                Log.d(TAG, "Time changed.");
-                displayLeds();
-            }
-        }
-    };
-
-    private void displayLeds() {
-        // get time in a char map format
-        Map<Integer, Character> charMap = mClockConfig.getTimeCharMap();
-
-        boolean[] matrix = mMatrix.generate(charMap);
-        try {
-            mLedDisplayer.display(matrix, mClockConfig);
-        } catch (IOException e) {
-            Log.e(TAG, "Error when displaying time.", e);
-            showDialog(getString(R.string.error_displaying));
-        }
+    private void setUiElements() {
+        mMadridBtn = findViewById(R.id.button_madrid);
+        mCanberraBtn = findViewById(R.id.button_canberra);
+        mWashington = findViewById(R.id.button_washington);
     }
 
-    private void showDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    private void setButtonsListeners() {
+        mMadridBtn.setOnClickListener(view -> {
+            Log.d(TAG, "Madrid");
+            showCurrentTime(GMT_MADRID);
+        });
 
-        builder.setTitle(R.string.title_warning);
-        builder.setMessage(message);
+        mCanberraBtn.setOnClickListener(view -> {
+            Log.d(TAG, "Canberra");
+            showCurrentTime(GMT_CANBERRA);
+        });
 
-        // add buttons
-        builder.setPositiveButton(R.string.app_name, (dialog, id) -> dialog.dismiss());
+        mWashington.setOnClickListener(view -> {
+            Log.d(TAG, "Washington");
+            showCurrentTime(GMT_WASHINGTON);
+        });
+    }
 
-        // create & show dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+    private void showCurrentTime(String gmt) {
+        TimeZone timeZone = TimeZone.getTimeZone(gmt);
+        Calendar calendar = Calendar.getInstance(timeZone);
+
+        String hour = String.format(Locale.getDefault(), TIME_FORMAT, calendar.get(Calendar.HOUR_OF_DAY));
+        String minutes = String.format(Locale.getDefault(), TIME_FORMAT, calendar.get(Calendar.MINUTE));
+
+        Log.d(TAG, "Current time = " + hour + ":" + minutes);
     }
 }
