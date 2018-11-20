@@ -1,6 +1,10 @@
 package com.tr.ledclock.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +20,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Welcome activity which allows user to configure its clock by selecting the desired city.
+ */
 public class WelcomeActivity extends Activity {
 
     // *************************************** CONSTANTS *************************************** //
@@ -85,22 +92,38 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        // quan l'app es mostri (no per primer cop)
+
+        // register to a service that notifies when time has changed
+        IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+        registerReceiver(mTimeChangedReceiver, filter);
     }
 
     @Override
     protected void onStop() {
+        // unregister to time changed service
+        unregisterReceiver(mTimeChangedReceiver);
+
         super.onStop();
-        // quan l'app es queda en background
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // quan l'app estigui a punt de morir
     }
 
     // ************************************ PRIVATE METHODS ************************************ //
+
+    private BroadcastReceiver mTimeChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action != null && action.equals(Intent.ACTION_TIME_TICK)) {
+                Log.d(TAG, "Time has changed.");
+                // TODO: this must be re-think
+                // displayLeds();
+            }
+        }
+    };
 
     /**
      * Method that displays LEDs (not yet) according to the current time.
