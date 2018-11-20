@@ -11,6 +11,7 @@ import com.tr.ledclock.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -19,17 +20,23 @@ public class WelcomeActivity extends Activity {
 
     // *************************************** CONSTANTS *************************************** //
 
+    // Log tag
     private static final String TAG = WelcomeActivity.class.getSimpleName();
+
+    // GMT for each city
     private static final String GMT_MADRID = "GMT+1:00";
     private static final String GMT_CANBERRA = "GMT+11:00";
     private static final String GMT_WASHINGTON = "GMT-7:00";
     private static final String TIME_FORMAT = "%02d";
 
+    // SPI port to be used for connecting to LEDs
     private static final String SPI_DEVICE_NAME = "SPI0.0";
 
+    // Total number of LEDs & max number per cell AB:CD
     private static final int MAX_LED_POS = 30;
     private static final int MAX_LEDS_PER_CELL = 7;
 
+    // Possible characters
     private static final char CHAR_0 = '0';
     private static final char CHAR_1 = '1';
     private static final char CHAR_2 = '2';
@@ -41,6 +48,9 @@ public class WelcomeActivity extends Activity {
     private static final char CHAR_8 = '8';
     private static final char CHAR_9 = '9';
 
+    // Positions of two dots AB:CD
+    private static final Integer[] TWO_POINTS_VALUES = {15, 16};
+    // Positions for each of the possible characters in cell A
     private static final Integer[] CHAR_0_VALUES = {0, 1, 2, 3, 4, 5};
     private static final Integer[] CHAR_1_VALUES = {3, 4};
     private static final Integer[] CHAR_2_VALUES = {0, 2, 3, 5, 6};
@@ -92,6 +102,11 @@ public class WelcomeActivity extends Activity {
 
     // ************************************ PRIVATE METHODS ************************************ //
 
+    /**
+     * Method that displays LEDs (not yet) according to the current time.
+     *
+     * @param gmt GMT time zone to be used to calculate current time.
+     */
     private void displayLeds(String gmt) {
         List<Integer> finalPositions = new ArrayList<>();
         int[] myLeds = new int[MAX_LED_POS];
@@ -117,6 +132,18 @@ public class WelcomeActivity extends Activity {
         }
     }
 
+    /**
+     * Method that adds an offset corresponding to the cell which character must be written. For
+     * instance, 14:30:
+     *  Cell1(A): "1" - Offset: 0
+     *  Cell2(B): "4" - Offset: 7
+     *  Cell3(C): "3" - Offset: 14 + 2 = 16
+     *  Cell4(D): "0" - Offset: 21 + 2 = 23
+     *
+     * @param cell Cell where character must be printed.
+     * @param basePositions List of integers mapping character in Cell1(A).
+     * @return List of integers mapping character with the offset according to its cell.
+     */
     private List<Integer> addOffset(int cell, List<Integer> basePositions) {
         // this offset is calculated in order to set the LED strip position given that each cell
         // has 7 LEDs.
@@ -140,6 +167,13 @@ public class WelcomeActivity extends Activity {
         return positions;
     }
 
+    /**
+     * Method that provides a list of positions according to the character received corresponding
+     * to Cell1(A) - AB:CD.
+     *
+     * @param character Character to be treated.
+     * @return List of positions to be used.
+     */
     private List<Integer> getBasePositions(Character character) {
         List<Integer> rawPositions = null;
         switch (character) {
@@ -181,9 +215,22 @@ public class WelcomeActivity extends Activity {
             throw new IllegalStateException("Unknown character: " + character);
         }
 
+        // add two dots positions into array ":"
+        rawPositions.addAll(Arrays.asList(TWO_POINTS_VALUES));
+
+        // set positions in ascending order (optional)
+        Collections.sort(rawPositions);
+
         return rawPositions;
     }
 
+    /**
+     * Method that retrieves current time in AB:CD format and creates its corresponding list of
+     * characters. For instance: 14:30 -> Characters list: "1", "4", "3, "0".
+     *
+     * @param gmt GMT time zone to be used to calculate current time.
+     * @return List of characters according to calculated time.
+     */
     private List<Character> getCurrentTimeCharacters(String gmt) {
         List<Character> charactersList = new ArrayList<>();
 
@@ -215,26 +262,21 @@ public class WelcomeActivity extends Activity {
         return charactersList;
     }
 
+    /**
+     * Method that maps UI elements with its corresponding variable to be used later.
+     */
     private void setUiElements() {
         mMadridBtn = findViewById(R.id.button_madrid);
         mCanberraBtn = findViewById(R.id.button_canberra);
         mWashington = findViewById(R.id.button_washington);
     }
 
+    /**
+     * Method that sets a listener when a user clicks on any of the defined buttons in the UI.
+     */
     private void setButtonsListeners() {
-        mMadridBtn.setOnClickListener(view -> {
-            Log.d(TAG, "Madrid");
-            displayLeds(GMT_MADRID);
-        });
-
-        mCanberraBtn.setOnClickListener(view -> {
-            Log.d(TAG, "Canberra");
-            displayLeds(GMT_CANBERRA);
-        });
-
-        mWashington.setOnClickListener(view -> {
-            Log.d(TAG, "Washington");
-            displayLeds(GMT_WASHINGTON);
-        });
+        mMadridBtn.setOnClickListener(view -> displayLeds(GMT_MADRID));
+        mCanberraBtn.setOnClickListener(view -> displayLeds(GMT_CANBERRA));
+        mWashington.setOnClickListener(view -> displayLeds(GMT_WASHINGTON));
     }
 }
