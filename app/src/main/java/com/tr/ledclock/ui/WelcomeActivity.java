@@ -7,9 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.tr.ledclock.R;
-import com.xrigau.driver.ws2801.Ws2801;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
