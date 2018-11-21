@@ -58,4 +58,8 @@ public class ClockConfig {
     public int getColor() {
         return mColor;
     }
+
+    public int getTurnOffColor() {
+        return Color.BLACK;
+    }
 }

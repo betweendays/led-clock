@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -148,9 +147,9 @@ public class WelcomeActivity extends Activity {
         // while the rest must be black.
         for (int i = 0; i < myLeds.length; i++) {
             if (finalPositions.contains(i)) {
-                myLeds[i] = Color.BLUE;
+                myLeds[i] = mClockConfig.getColor();
             } else {
-                myLeds[i] = Color.BLACK;
+                myLeds[i] = mClockConfig.getTurnOffColor();
             }
         }
     }
