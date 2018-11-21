@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.tr.ledclock.R;
+import com.tr.ledclock.ui.data.ClockConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,10 +31,7 @@ public class WelcomeActivity extends Activity {
     // Log tag
     private static final String TAG = WelcomeActivity.class.getSimpleName();
 
-    // GMT for each city
-    private static final String GMT_MADRID = "GMT+1:00";
-    private static final String GMT_CANBERRA = "GMT+11:00";
-    private static final String GMT_WASHINGTON = "GMT-7:00";
+    // Time format
     private static final String TIME_FORMAT = "%02d";
 
     // SPI port to be used for connecting to LEDs
@@ -75,6 +73,8 @@ public class WelcomeActivity extends Activity {
     private Button mCanberraBtn;
     private Button mWashington;
 
+    private ClockConfig mClockConfig;
+
     // *************************************** LIFECYCLE *************************************** //
 
     @Override
@@ -85,8 +85,11 @@ public class WelcomeActivity extends Activity {
         setUiElements();
         setButtonsListeners();
 
+        // init configuration by default
+        mClockConfig = new ClockConfig();
+
         // display LEDs with hour from Madrid by default
-        displayLeds(GMT_MADRID);
+        displayLeds();
     }
 
     @Override
@@ -119,23 +122,20 @@ public class WelcomeActivity extends Activity {
             String action = intent.getAction();
             if (action != null && action.equals(Intent.ACTION_TIME_TICK)) {
                 Log.d(TAG, "Time has changed.");
-                // TODO: this must be re-think
-                // displayLeds();
+                displayLeds();
             }
         }
     };
 
     /**
      * Method that displays LEDs (not yet) according to the current time.
-     *
-     * @param gmt GMT time zone to be used to calculate current time.
      */
-    private void displayLeds(String gmt) {
+    private void displayLeds() {
         List<Integer> finalPositions = new ArrayList<>();
         int[] myLeds = new int[MAX_LED_POS];
 
         // get list of characters from current time
-        List<Character> characters = getCurrentTimeCharacters(gmt);
+        List<Character> characters = getCurrentTimeCharacters(mClockConfig.getCityGmt());
 
         // get list of positions to be turned on in case of cell 0 and then, add the corresponding
         // offset according to the cell
@@ -298,8 +298,17 @@ public class WelcomeActivity extends Activity {
      * Method that sets a listener when a user clicks on any of the defined buttons in the UI.
      */
     private void setButtonsListeners() {
-        mMadridBtn.setOnClickListener(view -> displayLeds(GMT_MADRID));
-        mCanberraBtn.setOnClickListener(view -> displayLeds(GMT_CANBERRA));
-        mWashington.setOnClickListener(view -> displayLeds(GMT_WASHINGTON));
+        mMadridBtn.setOnClickListener(view -> {
+            mClockConfig.setCityGmt(ClockConfig.City.MADRID);
+            displayLeds();
+        });
+        mCanberraBtn.setOnClickListener(view -> {
+            mClockConfig.setCityGmt(ClockConfig.City.CANBERRA);
+            displayLeds();
+        });
+        mWashington.setOnClickListener(view -> {
+            mClockConfig.setCityGmt(ClockConfig.City.WASHINGTON);
+            displayLeds();
+        });
     }
 }
