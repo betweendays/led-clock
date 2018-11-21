@@ -11,7 +11,9 @@ import android.widget.Button;
 
 import com.tr.ledclock.R;
 import com.tr.ledclock.ui.data.ClockConfig;
+import com.xrigau.driver.ws2801.Ws2801;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,11 +70,14 @@ public class WelcomeActivity extends Activity {
 
     // ****************************************** VARS ***************************************** //
 
+    // View elements
     private Button mMadridBtn;
     private Button mCanberraBtn;
     private Button mWashington;
 
+    // Configuration
     private ClockConfig mClockConfig;
+    private Ws2801 mLedStrip;
 
     // *************************************** LIFECYCLE *************************************** //
 
@@ -86,9 +91,12 @@ public class WelcomeActivity extends Activity {
 
         // init configuration by default
         mClockConfig = new ClockConfig();
-
-        // display LEDs with hour from Madrid by default
-        displayLeds();
+        try {
+            mLedStrip = Ws2801.create(SPI_DEVICE_NAME, Ws2801.Mode.RGB);
+            displayLeds();
+        } catch (IOException e) {
+            // TODO handle error
+        }
     }
 
     @Override
@@ -104,6 +112,12 @@ public class WelcomeActivity extends Activity {
     protected void onStop() {
         // unregister to time changed service
         unregisterReceiver(mTimeChangedReceiver);
+
+        try {
+            mLedStrip.close();
+        } catch (IOException e) {
+            // TODO handle error
+        }
 
         super.onStop();
     }
@@ -151,6 +165,12 @@ public class WelcomeActivity extends Activity {
             } else {
                 myLeds[i] = mClockConfig.getTurnOffColor();
             }
+        }
+
+        try {
+            mLedStrip.write(myLeds);
+        } catch (IOException e) {
+            // TODO handle error
         }
     }
 
