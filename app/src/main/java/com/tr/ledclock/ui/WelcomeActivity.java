@@ -95,7 +95,7 @@ public class WelcomeActivity extends Activity {
             mLedStrip = Ws2801.create(SPI_DEVICE_NAME, Ws2801.Mode.RGB);
             displayLeds();
         } catch (IOException e) {
-            // TODO handle error
+            Log.e(TAG, "Error when creating LED instance.", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class WelcomeActivity extends Activity {
         try {
             mLedStrip.close();
         } catch (IOException e) {
-            // TODO handle error
+            Log.e(TAG, "Error when closing LED instance.", e);
         }
 
         super.onStop();
@@ -152,9 +152,14 @@ public class WelcomeActivity extends Activity {
 
         // get list of positions to be turned on in case of cell 0 and then, add the corresponding
         // offset according to the cell
-        for (int cell = 0; cell < characters.size(); cell++) {
-            List<Integer> basePositions = getBasePositions(characters.get(cell));
-            finalPositions.addAll(addOffset(cell, basePositions));
+        try {
+            for (int cell = 0; cell < characters.size(); cell++) {
+                List<Integer> basePositions = getBasePositions(characters.get(cell));
+                finalPositions.addAll(addOffset(cell, basePositions));
+            }
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "Invalid time character.. Do nothing.", e);
+            return;
         }
 
         // create a vector where positions that have to be turned on, must be the desired color
@@ -170,7 +175,7 @@ public class WelcomeActivity extends Activity {
         try {
             mLedStrip.write(myLeds);
         } catch (IOException e) {
-            // TODO handle error
+            Log.e(TAG, "Error when writing on LEDs.", e);
         }
     }
 
@@ -254,7 +259,7 @@ public class WelcomeActivity extends Activity {
         }
 
         if (rawPositions == null) {
-            throw new IllegalStateException("Unknown character: " + character);
+            throw new IllegalArgumentException("Unknown character: " + character);
         }
 
         // add two dots positions into array ":"
