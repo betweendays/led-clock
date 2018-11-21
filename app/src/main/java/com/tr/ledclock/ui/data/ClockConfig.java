@@ -33,6 +33,11 @@ public class ClockConfig {
 
     // ************************************* PUBLIC METHODS ************************************ //
 
+    /**
+     * Method that sets the city to be configured and its corresponding colour.
+     *
+     * @param city City to be saved.
+     */
     public void setCityGmt(City city) {
         switch (city) {
             case CANBERRA:
@@ -51,14 +56,29 @@ public class ClockConfig {
         }
     }
 
+    /**
+     * Method that provides the city's GMT.
+     *
+     * @return City's GMT.
+     */
     public String getCityGmt() {
         return mCityGmt;
     }
 
+    /**
+     * Method that provides the colour to be printed.
+     *
+     * @return Colour to be printed.
+     */
     public int getColor() {
         return mColor;
     }
 
+    /**
+     * Method that provides the color to be printed when LED must be turned off.
+     *
+     * @return Colour to be printed when turning LED off.
+     */
     public int getTurnOffColor() {
         return Color.BLACK;
     }
